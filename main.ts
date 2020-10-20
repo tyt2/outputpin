@@ -8,16 +8,21 @@ input.onGesture(Gesture.Shake, function () {
     togglePin(DigitalPin.P2)
 })
 function togglePin (thePin: DigitalPin) {
-    let theCurrentPin = thePin - 100
+    // get pin number
+    let thePinNumber = thePin - 100
 
-    // toggle stored value of pin
-    pinValues[theCurrentPin] = Math.abs(pinValues[theCurrentPin] - 1)
+    // flip stored value of pin
+    pinValues[thePinNumber] = Math.abs(pinValues[thePinNumber] - 1)
 
-    // Write value to pin
-    pins.digitalWritePin(thePin, pinValues[theCurrentPin])
+    // Write the flipped value to pin
+    pins.digitalWritePin(thePin, pinValues[thePinNumber])
 
-    // Set indicator
-    led.toggle(theCurrentPin, 0)
+    // Set indicator explicitly instead of toggle
+    if (pinValues[thePinNumber] == 0) {
+        led.unplot(thePinNumber, 0)
+    } else {
+        led.plot(thePinNumber, 0)
+    }
 }
 // Initialize
 let pinValues = [0, 0, 0]
