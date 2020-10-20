@@ -7,7 +7,7 @@ input.onButtonPressed(Button.B, function () {
 input.onGesture(Gesture.Shake, function () {
     togglePin(DigitalPin.P2)
 })
-function togglePin (thePin: DigitalPin) {
+function togglePin (thePin: DigitalPin) { 
     // get pin number
     let thePinNumber = thePin - 100
 
@@ -29,3 +29,5 @@ let pinValues = [0, 0, 0]
 pins.digitalWritePin(DigitalPin.P0, 0)
 pins.digitalWritePin(DigitalPin.P1, 0)
 pins.digitalWritePin(DigitalPin.P2, 0)
+basic.showIcon(IconNames.Yes)
+basic.clearScreen()
