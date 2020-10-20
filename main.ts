@@ -1,14 +1,19 @@
 input.onButtonPressed(Button.A, function () {
     togglePin(DigitalPin.P0)
-    buttonPressed = true
+buttonPressed = true
 })
+function resetAllPins () {
+    pins.digitalWritePin(DigitalPin.P0, 0)
+    pins.digitalWritePin(DigitalPin.P1, 0)
+    pins.digitalWritePin(DigitalPin.P2, 0)
+}
 input.onButtonPressed(Button.B, function () {
     pinFluctuate(AnalogPin.P0)
 })
 input.onGesture(Gesture.Shake, function () {
-    //pins.analogWritePin(AnalogPin.P0, 0)
     togglePin(DigitalPin.P1)
 })
+
 function togglePin (thePin: DigitalPin) { 
     // get pin number
     let thePinNumber = thePin - 100
@@ -27,23 +32,19 @@ function togglePin (thePin: DigitalPin) {
     }
 }
 function pinFluctuate(thePin: AnalogPin) {
-    let start = 50
-    let max = 100
+    let start = 10
+    let max = 40
     led.unplot(thePin - 100, 4)
-    for (let index = 0; index <= max; index++) {
+    for (let index = max; index >= 0 && !buttonPressed; index--) {
         pins.analogWritePin(thePin, 1023 * Math.constrain((start + index * (100 - start) / max) / 100, 0, 1))
-        if (buttonPressed) {
-            buttonPressed = false
-            break
-        }
         basic.pause(30)
     }
+    for (let index = 0; index <= max && !buttonPressed; index++) {
+        pins.analogWritePin(thePin, 1023 * Math.constrain((start + index * (100 - start) / max) / 100, 0, 1))
+        basic.pause(30)
+    }
+    buttonPressed = false
     led.plot(thePin - 100, 4)
-}
-function resetAllPins() {
-    pins.digitalWritePin(DigitalPin.P0, 0)
-    pins.digitalWritePin(DigitalPin.P1, 0)
-    pins.digitalWritePin(DigitalPin.P2, 0)
 }
 // Initialize
 basic.showIcon(IconNames.Yes)
